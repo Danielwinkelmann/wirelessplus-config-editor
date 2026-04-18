@@ -1,0 +1,377 @@
+:root {
+  --bg:       #0a0d12;
+  --panel:    #11151c;
+  --panel-2:  #171c25;
+  --border:   #242b36;
+  --border-2: #2e3642;
+  --text:     #d4d8df;
+  --text-dim: #7a818f;
+  --muted:    #555b67;
+  --accent:   #7aa2f7;
+  --accent-2: #bb9af7;
+  --ok:       #9ece6a;
+  --err:      #f7768e;
+  --warn:     #e0af68;
+  --input-bg: #0c1017;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; font-family: var(--mono) }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text) }
+body { font: 400 13px/1.5 var(--mono); -webkit-font-smoothing: antialiased }
+::selection { background: rgba(122,162,247,.3) }
+
+/* ---------- Layout ---------- */
+header {
+  padding: 12px 24px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px; flex-wrap: nowrap;
+  background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
+  white-space: nowrap;
+}
+header .brand { font-weight: 700; letter-spacing: -.01em; flex-shrink: 0 }
+header .brand::before { content: "$ "; color: var(--accent) }
+header .sep { color: var(--border-2); flex-shrink: 0 }
+header .meta { color: var(--text-dim); font-size: 12px; flex-shrink: 0 }
+@media (max-width: 820px) { header .meta.optional { display: none } }
+header .spacer { flex: 1; min-width: 0 }
+header .info { color: var(--text-dim); font-size: 12px; flex-shrink: 0;
+  overflow: hidden; text-overflow: ellipsis; max-width: 260px }
+
+main { max-width: 1100px; margin: 0 auto; padding: 24px }
+
+/* ---------- Buttons ---------- */
+button, label.btn {
+  background: var(--panel); border: 1px solid var(--border); color: var(--text);
+  padding: 7px 14px; border-radius: 4px; cursor: pointer;
+  font: 500 12px/1 var(--mono); letter-spacing: .02em;
+  transition: all .12s ease;
+}
+button:hover, label.btn:hover { border-color: var(--accent); color: var(--accent) }
+button.primary {
+  background: var(--accent); color: #0a0d12; border-color: var(--accent); font-weight: 700;
+}
+button.primary:hover { background: #8ab5ff; color: #0a0d12 }
+button:disabled { opacity: .4; cursor: not-allowed }
+button:disabled:hover { border-color: var(--border); color: var(--text) }
+input[type=file] { display: none }
+
+.actions { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center }
+
+/* ---------- Status ---------- */
+.status {
+  padding: 10px 14px; border-radius: 4px; margin-bottom: 20px;
+  font-size: 12px; display: none; border: 1px solid transparent;
+}
+.status.ok   { background: rgba(158,206,106,.08); color: var(--ok);   border-color: rgba(158,206,106,.25); display: block }
+.status.err  { background: rgba(247,118,142,.08); color: var(--err);  border-color: rgba(247,118,142,.25); display: block }
+.status.warn { background: rgba(224,175,104,.08); color: var(--warn); border-color: rgba(224,175,104,.25); display: block }
+.status::before { content: "› " }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+  margin-bottom: 14px;
+}
+.card header.card-hd {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--panel-2);
+}
+.card header.card-hd h2 {
+  margin: 0; font: 600 12px/1 var(--mono);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+}
+.card header.card-hd h2::before { content: "// " }
+.card header.card-hd .range {
+  margin-left: auto; color: var(--muted); font-size: 11px; font-weight: 400;
+}
+.card .body { padding: 16px }
+
+/* ---------- Rows ---------- */
+.row {
+  display: grid; grid-template-columns: 200px 1fr auto;
+  gap: 12px; align-items: center; margin-bottom: 10px;
+}
+.row:last-child { margin-bottom: 0 }
+.row > * { min-width: 0 }
+.row > label { color: var(--text-dim); font-size: 12px }
+.row > label::before { content: "["; color: var(--muted) }
+.row > label::after  { content: "]"; color: var(--muted) }
+.row > small { color: var(--muted); font-size: 11px; white-space: nowrap; justify-self: end }
+
+/* ---------- Inputs ---------- */
+input[type=text], input[type=number], input[type=password] {
+  background: var(--input-bg); border: 1px solid var(--border); color: var(--text);
+  padding: 7px 10px; border-radius: 3px;
+  font: 400 12px/1.2 var(--mono); width: 100%; outline: none;
+  transition: border-color .1s;
+}
+input[type=text]:focus, input[type=number]:focus, input[type=password]:focus {
+  border-color: var(--accent); background: #0d1219;
+}
+input[type=text]::placeholder { color: var(--muted) }
+input[type=number] { font-variant-numeric: tabular-nums }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0 }
+
+/* ---------- Segmented button group ---------- */
+.segmented {
+  display: inline-flex; background: var(--input-bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 2px; gap: 0;
+}
+.segmented input[type=radio] { position: absolute; opacity: 0; pointer-events: none }
+.segmented label {
+  padding: 5px 12px; cursor: pointer; color: var(--text-dim);
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+  border-radius: 2px; transition: all .1s;
+}
+.segmented label:hover { color: var(--text) }
+.segmented input[type=radio]:checked + label {
+  background: var(--panel-2); color: var(--accent); font-weight: 600;
+  box-shadow: 0 0 0 1px var(--border-2);
+}
+
+/* ---------- Toggle switch ---------- */
+.toggle {
+  position: relative; display: inline-flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.toggle input[type=checkbox] { position: absolute; opacity: 0; pointer-events: none }
+.toggle .track {
+  width: 36px; height: 20px; background: var(--input-bg);
+  border: 1px solid var(--border); border-radius: 10px; position: relative;
+  transition: all .15s;
+}
+.toggle .track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; background: var(--text-dim);
+  border-radius: 50%; transition: all .15s;
+}
+.toggle input[type=checkbox]:checked + .track {
+  background: var(--accent); border-color: var(--accent);
+}
+.toggle input[type=checkbox]:checked + .track::after { left: 18px; background: #0a0d12 }
+.toggle .lbl { color: var(--text-dim); font-size: 12px }
+.toggle input[type=checkbox]:checked ~ .lbl { color: var(--text) }
+
+/* ---------- Time control ---------- */
+.time {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--input-bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 2px;
+}
+.time input {
+  background: transparent !important; border: none !important;
+  width: 42px; text-align: center; padding: 5px 4px !important;
+  font-variant-numeric: tabular-nums;
+}
+.time input:focus { background: rgba(122,162,247,.08) !important }
+.time .colon { color: var(--text-dim); padding: 0 2px; font-weight: 700 }
+
+/* ---------- Email validation ---------- */
+input.invalid { border-color: var(--err) !important; background: rgba(247,118,142,.05) !important }
+input.invalid:focus { border-color: var(--err) !important }
+
+/* ---------- Port preset button group ---------- */
+.port-wrap {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; min-width: 0;
+}
+.port-input {
+  width: 70px !important; flex-shrink: 0; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.segmented.port-presets {
+  padding: 0; gap: 2px; background: transparent; border: none;
+  display: inline-flex; flex-wrap: nowrap;
+}
+.segmented.port-presets button {
+  background: var(--input-bg); border: 1px solid var(--border);
+  padding: 6px 10px; font-size: 11px; border-radius: 2px;
+  letter-spacing: .04em; color: var(--text-dim);
+  white-space: nowrap;
+}
+.segmented.port-presets button:hover { color: var(--text); border-color: var(--border-2) }
+.segmented.port-presets button.active {
+  color: var(--accent); border-color: var(--accent); font-weight: 600;
+  background: rgba(122,162,247,.08);
+}
+
+/* ---------- Flatpickr theme overrides ---------- */
+.flatpickr-input.time-picker {
+  background: var(--input-bg); border: 1px solid var(--border); color: var(--text);
+  padding: 7px 10px; border-radius: 3px; font: 400 12px/1.2 var(--mono);
+  width: 120px; text-align: center; font-variant-numeric: tabular-nums;
+}
+.flatpickr-input.time-picker:focus { border-color: var(--accent); background: #0d1219 }
+.flatpickr-calendar {
+  background: var(--panel-2) !important; border: 1px solid var(--border) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4) !important; font-family: var(--mono) !important;
+}
+.flatpickr-time input,
+.flatpickr-time .flatpickr-time-separator,
+.flatpickr-time .flatpickr-am-pm {
+  color: var(--text) !important; background: transparent !important; font-family: var(--mono) !important;
+}
+.flatpickr-time input:hover,
+.flatpickr-time input:focus,
+.flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-time .flatpickr-am-pm:focus {
+  background: rgba(122,162,247,.08) !important;
+}
+.flatpickr-time .numInputWrapper span.arrowUp:after { border-bottom-color: var(--accent) !important }
+.flatpickr-time .numInputWrapper span.arrowDown:after { border-top-color: var(--accent) !important }
+
+/* ---------- Confidence badges ---------- */
+.badge {
+  display: inline-block; padding: 2px 7px; border-radius: 2px;
+  font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge.verified { background: rgba(158,206,106,.12); color: var(--ok) }
+.badge.inferred { background: rgba(224,175,104,.12); color: var(--warn) }
+.badge.guess    { background: rgba(247,118,142,.12); color: var(--err) }
+
+/* ---------- Hex view ---------- */
+.hex-view {
+  font-family: var(--mono); font-size: 11px; line-height: 1.5;
+  background: var(--input-bg); border: 1px solid var(--border); border-radius: 3px;
+  padding: 12px; overflow-x: auto; max-height: 420px; overflow-y: auto;
+  white-space: pre; color: var(--text-dim);
+}
+.hex-view .off  { color: var(--muted) }
+.hex-view .diff { color: var(--accent); background: rgba(122,162,247,.12); padding: 0 1px; border-radius: 2px }
+.hex-view .nz   { color: var(--text) }
+.hex-view .asc  { color: var(--text-dim) }
+
+details summary { cursor: pointer; color: var(--text-dim); padding: 6px 0; font-size: 12px }
+details summary:hover { color: var(--text) }
+details summary::marker { color: var(--muted) }
+
+.hint { color: var(--muted); font-size: 11px; margin-top: 8px; line-height: 1.6 }
+.hint::before { content: "// " }
+
+footer { color: var(--muted); font-size: 11px; text-align: center; padding: 32px 0 }
+
+/* ========== Boot overlay ========== */
+.boot-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: radial-gradient(ellipse at center, #0a0d12 0%, #05070a 75%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  transition: opacity .4s ease, filter .4s ease;
+}
+.boot-overlay.fade { opacity: 0; pointer-events: none; filter: blur(8px) }
+
+.boot-inner {
+  font-family: var(--mono);
+  color: var(--text);
+  width: min(780px, 92vw);
+  padding: 24px;
+  position: relative;
+  animation: bootGlow 3s ease-in-out infinite alternate;
+}
+@keyframes bootGlow {
+  from { text-shadow: 0 0 1px rgba(122,162,247,.2) }
+  to   { text-shadow: 0 0 8px rgba(122,162,247,.5) }
+}
+
+.boot-log { font-size: 12px; line-height: 1.6; color: var(--text-dim) }
+.boot-line { white-space: pre; }
+.boot-line.dim  { color: var(--muted) }
+.boot-line.ok   { color: var(--ok) }
+.boot-line.warn { color: var(--warn) }
+.boot-line.err  { color: var(--err) }
+.boot-line::after {
+  content: "▊"; color: var(--accent);
+  animation: blink 1s steps(2) infinite; margin-left: 2px;
+}
+.boot-line:not(:last-child)::after { content: "" }
+
+.boot-banner {
+  margin: 22px 0 10px;
+  color: var(--accent);
+  font-size: 11px; line-height: 1.05; letter-spacing: -.02em;
+  white-space: pre;
+  filter: drop-shadow(0 0 8px rgba(122,162,247,.4));
+  transition: filter .4s;
+}
+.boot-banner.locked {
+  filter: drop-shadow(0 0 14px rgba(122,162,247,.7))
+          drop-shadow(0 0 3px rgba(187,154,247,.5));
+  animation: bannerPulse 2s ease-in-out infinite alternate;
+}
+@keyframes bannerPulse {
+  from { filter: drop-shadow(0 0 8px rgba(122,162,247,.35)) }
+  to   { filter: drop-shadow(0 0 18px rgba(122,162,247,.75))
+                 drop-shadow(0 0 6px rgba(187,154,247,.4)) }
+}
+
+.boot-status {
+  font-size: 11px; color: var(--text-dim);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin: 14px 0 8px;
+}
+.boot-status::before { content: "› " }
+
+.boot-bar {
+  width: 100%; height: 4px; border: 1px solid var(--border-2);
+  background: rgba(122,162,247,.04); overflow: hidden;
+  border-radius: 1px;
+}
+.boot-bar-fill {
+  width: 0%; height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 12px rgba(122,162,247,.6);
+}
+
+.boot-online {
+  margin-top: 22px; text-align: center;
+  color: var(--ok); font-weight: 700; letter-spacing: .2em;
+  font-size: 14px;
+  opacity: 0; transform: scale(.96);
+  transition: opacity .3s, transform .3s;
+  text-shadow: 0 0 12px rgba(158,206,106,.7);
+}
+.boot-online.show {
+  opacity: 1; transform: scale(1);
+  animation: onlineFlicker .8s steps(6) 1;
+}
+@keyframes onlineFlicker {
+  0%, 100% { opacity: 1 }
+  10% { opacity: .3 }
+  15% { opacity: 1 }
+  55% { opacity: .5 }
+  60% { opacity: 1 }
+}
+@keyframes blink { 50% { opacity: 0 } }
+
+/* CRT scanlines overlay */
+.boot-scanlines {
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0) 0 2px,
+    rgba(255,255,255,.025) 2px 3px
+  );
+  mix-blend-mode: overlay;
+}
+.boot-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center,
+    transparent 40%, rgba(0,0,0,.6) 100%);
+}
+
+/* Persistent subtle scanlines on app after boot */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0) 0 2px,
+    rgba(122,162,247,.014) 2px 3px
+  );
+  z-index: 9998;
+}
+
+/* Initial state: cards hidden until boot animates them in */
+.card { opacity: 0 }
+.boot-overlay ~ main .card { opacity: 0 }
